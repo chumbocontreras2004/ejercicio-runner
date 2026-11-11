@@ -1,0 +1,47 @@
+name: Pipeline
+
+run-name: ${{ github.ref_name }} lanzado por ${{ github.actor }}
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  STAGE: workflow
+
+jobs:
+  niveles:
+    runs-on: ubuntu-latest
+    env:
+      STAGE: job
+    steps:
+      - name: Nivel Job
+        run: echo "$STAGE"
+
+      - name: Nivel Step
+        env:
+          STAGE: step
+        run: echo "$STAGE"
+
+  origen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Nivel Workflow
+        run: echo "$STAGE"
+
+  check-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar secreto
+        env:
+          TOKEN: ${{ secrets.PROD_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "Error: el token está vacío"
+            exit 1
+          fi
+          echo "secreto presente"
