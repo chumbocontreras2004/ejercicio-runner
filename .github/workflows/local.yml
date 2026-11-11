@@ -1,0 +1,11 @@
+name: Local
+
+on:
+  workflow_dispatch:
+
+jobs:
+  local:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - name: Quién soy
+        run: hostname
